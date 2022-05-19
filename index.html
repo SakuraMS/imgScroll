@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./imitate-bilibili-img-scroll.js"></script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #container{
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script>
+        let config = {
+            container: 'container',
+            imgs: [
+                {
+                    title: '从现在开始，我将追寻你的名字',
+                    url: './imgs/your_name_1.png',
+                    backgroundImage: 'linear-gradient(to top, rgb(10,39,117) 0%, rgb(22,81,186) 50%,transparent)'
+                },
+                {
+                    title: '假如我们相遇，肯定一眼就能认出彼此',
+                    url: './imgs/your_name_2.jpg',
+                    backgroundImage: 'linear-gradient(to top, rgb(79,94,44) 0%, rgb(79,94,44) 50%, transparent)'
+                },
+                {
+                    title: '重要的人，不想忘记的人，绝对不能忘的人',
+                    url: './imgs/your_name_3.jpg',
+                    backgroundImage: 'linear-gradient(to top, rgb(191,103,109) 0%, rgb(191,103,109) 50%, transparent)'
+                },
+                {
+                    title: '相遇不计取数的世界里，和命运的那人相逢',
+                    url: './imgs/your_name_4.jpg',
+                    backgroundImage: 'linear-gradient(to top, rgb(103,90,87) 0%, rgb(103,90,87) 50%, transparent)'
+                },
+                {
+                    title: '醒来后也不要忘了彼此',
+                    url: './imgs/your_name_6.jpg',
+                    backgroundImage: 'linear-gradient(to top, rgb(31,44,87) 0%, rgb(90, 137, 218) 50%, transparent)'
+                },
+                {
+                    title: '聚拢，成形，捻转，回绕，时而返回，暂歇，再联结',
+                    url: './imgs/your_name_7.jpg',
+                    backgroundImage: 'linear-gradient(to top, rgb(11,17,51) 0%, rgb(95,63,75) 50%, transparent)'
+                }
+            ],
+            width: 800,
+            height: 500,
+            delayTime: 200
+        }
+        let scroll = bilibiliImgScroll(config)
+
+        function prev(){
+            scroll.prev()
+        }
+
+        function next(){
+            scroll.next()
+        }
+    </script>
+</body>
+</html>
