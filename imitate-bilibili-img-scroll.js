@@ -8,14 +8,18 @@ function bilibiliImgScroll(config){
         transitionTimingFunction: 'ease'
     },config)
 
+    /**
+     * 当前索引
+     */
     let _index = 0
     let container = document.getElementById(config.container)
     let mainDiv = document.createElement('div')
     let footerDiv = document.createElement('div')
     let footerTitle = createFooterTitle()
     createFooterSwitch()
+    let ul = createFooterIcon()
     
-    let timer
+    let timer = undefined
 
     init()
 
@@ -45,7 +49,7 @@ function bilibiliImgScroll(config){
         })
         footerDiv.appendChild(footerTitle)
         container.appendChild(footerDiv)
-        resetFooter()
+        resetFooter(_index)
 
         let firstDiv = document.createElement('div')
         firstDiv.style.width = '100%'
@@ -73,26 +77,46 @@ function bilibiliImgScroll(config){
 
     function prev(){
         if(timer) return
+        mainDiv.style.transition = `all ${config.delayTime}ms ${config.transitionTimingFunction}`
         mainDiv.style.transform = `translateX(0px)`
+        let targetIndex
         if(_index === 0){
-            _index = config.imgs.length - 1
+            targetIndex = config.imgs.length - 1
         }else{
-            _index--
+            targetIndex = _index - 1
         }
-        resetFooter()
-        timer = setTimeout(reset,config.delayTime+200)
+        resetFooter(targetIndex)
+        timer = setTimeout(reset,config.delayTime)
     }
 
     function next(){
         if(timer) return
+        mainDiv.style.transition = `all ${config.delayTime}ms ${config.transitionTimingFunction}`
         mainDiv.style.transform = `translateX(${-config.width*2}px)`
+        let targetIndex
         if(_index === config.imgs.length - 1){
-            _index = 0
+            targetIndex = 0
         }else{
-            _index++
+            targetIndex = _index + 1
         }
-        resetFooter()
-        timer = setTimeout(reset,config.delayTime+200)
+        resetFooter(targetIndex)
+        timer = setTimeout(reset,config.delayTime)
+    }
+
+    function specifyIndex(targetIndex){
+        let imgNodes = container.getElementsByTagName('img')
+        let preIndex = targetIndex - 1
+        if(targetIndex === 0){
+            preIndex = config.imgs.length - 1
+        }
+        for (let i = 0; i < imgNodes.length; i++) {
+            if(preIndex === config.imgs.length){
+                preIndex = 0
+            }
+            imgNodes[i].src = config.imgs[preIndex].url
+            preIndex++
+        }
+        resetFooter(targetIndex)
     }
 
     function reset(){
@@ -114,14 +138,18 @@ function bilibiliImgScroll(config){
             __index++
         }
         setTimeout(function(){
-            mainDiv.style.transition = `all ${config.delayTime}ms ${config.transitionTimingFunction}`
             timer = undefined
         },10)
     }
 
-    function resetFooter(){
-        footerDiv.style.backgroundImage = config.imgs[_index].backgroundImage
-        footerTitle.innerText = config.imgs[_index].title
+    function resetFooter(targetIndex){
+        footerDiv.style.backgroundImage = config.imgs[targetIndex].backgroundImage
+        footerTitle.innerText = config.imgs[targetIndex].title
+        ul.children[_index].style.width = '16px'
+        ul.children[_index].style.backgroundColor = 'rgba(255,255,255,.4)'
+        ul.children[targetIndex].style.width = '50px'
+        ul.children[targetIndex].style.backgroundColor = 'white'
+        _index = targetIndex
     }
 
     function createFooterTitle(){
@@ -147,7 +175,8 @@ function bilibiliImgScroll(config){
             marginTop: (config.height * 0.2)+'px',
             backgroundColor: 'rgba(255,255,255,.1)',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            zIndex: 999
         })
         let leftSwitch = document.createElement('div')
         setStyle(leftSwitch, {
@@ -204,7 +233,8 @@ function bilibiliImgScroll(config){
             marginTop: (config.height * 0.2)+'px',
             backgroundColor: 'rgba(255,255,255,.1)',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            zIndex: 999
         })
         let rightSwitch = document.createElement('div')
         setStyle(rightSwitch, {
@@ -255,6 +285,41 @@ function bilibiliImgScroll(config){
         footerRightSwitch.appendChild(rightSwitch)
         footerDiv.appendChild(footerLeftSwitch)
         footerDiv.appendChild(footerRightSwitch)
+    }
+
+    function createFooterIcon(){
+        let ul = document.createElement('ul')
+        setStyle(ul, {
+            listStyleType: 'none',
+            position: 'absolute',
+            marginTop: '150px',
+            display: 'flex',
+            paddingLeft: '0'
+        })
+
+        for (let i = 0; i < config.imgs.length; i++) {
+            let li = document.createElement('li')
+            if(i === _index){
+                li.style.width = '50px'
+                li.style.backgroundColor = 'white'
+            }else{
+                li.style.width = '16px'
+                li.style.backgroundColor = 'rgba(255,255,255,.4)'
+            }
+            setStyle(li, {
+                height: '4px',
+                borderRadius: '4px',
+                marginRight: '4px',
+                cursor: 'pointer',
+                transition: `all ${config.delayTime}ms`
+            })
+            li.addEventListener('click', () => specifyIndex(i))
+            ul.appendChild(li)
+        }
+
+        footerDiv.appendChild(ul)
+
+        return ul
     }
 
     function setStyle(dom,style){

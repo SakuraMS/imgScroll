@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>图片滚动</title>
     <script src="./imitate-bilibili-img-scroll.js"></script>
     <style>
         *{
@@ -19,6 +19,12 @@
         }
         #container{
             border-radius: 6px;
+        }
+        @media screen and (max-width: 800px){
+            #container{
+                width: 600px;
+                height: 375px;
+            }
         }
     </style>
 </head>
@@ -50,28 +56,20 @@
                 },
                 {
                     title: '醒来后也不要忘了彼此',
-                    url: './imgs/your_name_6.jpg',
+                    url: './imgs/your_name_5.jpg',
                     backgroundImage: 'linear-gradient(to top, rgb(31,44,87) 0%, rgb(90, 137, 218) 50%, transparent)'
                 },
                 {
                     title: '聚拢，成形，捻转，回绕，时而返回，暂歇，再联结',
-                    url: './imgs/your_name_7.jpg',
+                    url: './imgs/your_name_6.jpg',
                     backgroundImage: 'linear-gradient(to top, rgb(11,17,51) 0%, rgb(95,63,75) 50%, transparent)'
                 }
             ],
             width: 800,
             height: 500,
-            delayTime: 200
+            delayTime: 500
         }
-        let scroll = bilibiliImgScroll(config)
-
-        function prev(){
-            scroll.prev()
-        }
-
-        function next(){
-            scroll.next()
-        }
+        bilibiliImgScroll(config)
     </script>
 </body>
 </html>
